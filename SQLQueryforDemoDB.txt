@@ -1,0 +1,109 @@
+USE [Demo]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 7/28/2021 1:57:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[FirstName] [nvarchar](150) NULL,
+	[LastName] [nvarchar](150) NULL,
+	[EmailID] [nvarchar](150) NULL,
+	[MobileNumber] [nvarchar](15) NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  StoredProcedure [dbo].[Createuser]    Script Date: 7/28/2021 1:57:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[Createuser] 
+	(
+	@firstname nvarchar(150),
+	@lastname nvarchar(150),
+	@emaildID nvarchar(150),
+	@mobilenumber nvarchar(15)
+	)
+AS
+BEGIN	
+IF Not EXISTS
+(
+    SELECT *
+    FROM users
+    WHERE [EmailID]=@emaildID and [MobileNumber]=@mobilenumber
+)
+    BEGIN
+     insert into users (FirstName,LastName,EmailID,MobileNumber) 
+	values (@firstname,@lastname,@emaildID,@mobilenumber);
+END
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[deleteuser]    Script Date: 7/28/2021 1:57:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+  Create PROCEDURE [dbo].[deleteuser] 
+	(
+	@ID bigint
+	)
+AS
+BEGIN	
+DELETE FROM [dbo].[Users]
+ WHERE [ID]=@ID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[getuserbyid]    Script Date: 7/28/2021 1:57:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+  Create PROCEDURE [dbo].[getuserbyid] 
+	(
+	@ID bigint
+	)
+AS
+BEGIN	
+SELECT [ID]
+      ,[FirstName]
+      ,[LastName]
+      ,[EmailID]
+      ,[MobileNumber]
+  FROM [Demo].[dbo].[Users]
+  where ID=@ID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[updateuser]    Script Date: 7/28/2021 1:57:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+  Create PROCEDURE [dbo].[updateuser] 
+	(
+	@ID bigint,
+	@firstname nvarchar(150),
+	@lastname nvarchar(150),
+	@emaildID nvarchar(150),
+	@mobilenumber nvarchar(15)
+	)
+AS
+BEGIN	
+UPDATE [dbo].[Users]
+   SET [FirstName] = @firstname
+      ,[LastName] = @lastname
+      ,[EmailID] = @emaildID
+      ,[MobileNumber] = @mobilenumber
+ WHERE [ID]=@ID
+END
+GO
