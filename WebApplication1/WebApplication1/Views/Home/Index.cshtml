@@ -1,0 +1,59 @@
+﻿@model IEnumerable<WebApplication1.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User List </h2>
+<br />
+<p>
+    @Html.ActionLink("Create New", "Create", null,new {  @class = "btn btn-primary" } )
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th>
+           First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+  Email ID 
+        </th>
+        <th>
+          Phone Number
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.emailid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.mobilenumber)
+        </td>
+        <td>
+            @using (Html.BeginForm("Create", "Home", FormMethod.Get))
+            {
+                <input type="hidden" name="id" value="@item.id" />
+                <input type="submit" class="btn btn-primary" value="Edit" />
+            } 
+            <br />
+            @using (Html.BeginForm("Delete", "Home", FormMethod.Get))
+            {
+                <input type="hidden" name="id" value="@item.id" />
+                <input type="submit" class="btn btn-warning" value="Delete" />
+            }
+        </td>
+    </tr>
+}
+
+</table>
